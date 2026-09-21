@@ -1,0 +1,1471 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#16241d">
+<title>Simulasi Latihan Mandiri — Bahasa Inggris Wajib</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-deep:#16241d;
+    --bg-deep-2:#1d2f26;
+    --parchment:#f4eedb;
+    --parchment-2:#ece2c6;
+    --ink:#202b22;
+    --ink-soft:#4a564b;
+    --gold:#d9a441;
+    --gold-dark:#a97a26;
+    --teal:#2e6e62;
+    --teal-light:#5b9c8e;
+    --correct:#3f7d5c;
+    --wrong:#b5533c;
+    --line: rgba(32,43,34,0.14);
+    --shadow: 0 18px 40px -20px rgba(10,16,12,0.45);
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;padding:0;height:100%;overscroll-behavior-y:none;}
+  body{
+    background:
+      radial-gradient(circle at 12% 8%, rgba(217,164,65,0.10), transparent 40%),
+      radial-gradient(circle at 90% 85%, rgba(91,156,142,0.14), transparent 45%),
+      var(--bg-deep);
+    color:var(--ink);
+    font-family:'IBM Plex Sans', sans-serif;
+    min-height:100vh;
+    min-height:100dvh;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{
+    max-width:880px;margin:0 auto;
+    padding:max(20px, env(safe-area-inset-top)) max(20px, env(safe-area-inset-right)) max(90px, env(safe-area-inset-bottom)) max(20px, env(safe-area-inset-left));
+  }
+  .masthead{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:22px;color:var(--parchment);}
+  .masthead .eyebrow{font-family:'IBM Plex Mono', monospace;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--teal-light);margin-bottom:6px;}
+  .masthead h1{font-family:'Fraunces', serif;font-weight:700;font-size:clamp(24px,4vw,34px);line-height:1.08;margin:0;color:var(--parchment);}
+  .masthead h1 em{color:var(--gold);font-style:normal;}
+  .masthead-right{display:flex;flex-direction:column;align-items:center;gap:8px;flex:0 0 auto;}
+  .badge-stamp{width:74px;height:74px;border-radius:50%;border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;text-align:center;font-family:'IBM Plex Mono',monospace;color:var(--gold);font-size:9px;letter-spacing:.05em;line-height:1.25;transform:rotate(-8deg);opacity:.9;}
+  .fs-btn{appearance:none;border:1px solid rgba(244,238,219,0.35);background:rgba(244,238,219,0.08);color:var(--parchment);border-radius:8px;padding:6px 10px;font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.04em;display:flex;align-items:center;gap:6px;cursor:pointer;transition:background .15s ease, border-color .15s ease;white-space:nowrap;}
+  .fs-btn:hover{background:rgba(244,238,219,0.16);border-color:var(--gold);}
+  .fs-btn:focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
+  .fs-btn svg{width:13px;height:13px;flex:0 0 auto;}
+  .ios-fs-hint{display:none;font-family:'IBM Plex Mono',monospace;font-size:9.5px;color:rgba(244,238,219,0.55);text-align:center;max-width:110px;line-height:1.4;}
+  .panel{background:var(--parchment);border-radius:14px;box-shadow:var(--shadow);padding:30px clamp(18px,4vw,40px);margin-bottom:22px;border:1px solid rgba(32,43,34,0.06);}
+  .panel + .panel{margin-top:22px;}
+  .disclaimer{background:rgba(181,83,60,0.10);border:1px dashed var(--wrong);border-radius:10px;padding:12px 16px;margin-bottom:20px;font-size:13px;color:var(--ink);line-height:1.55;}
+  .disclaimer b{color:var(--wrong);}
+  #cover .lede{font-size:15.5px;color:var(--ink-soft);line-height:1.6;max-width:60ch;}
+  .meta-row{display:flex;flex-wrap:wrap;gap:10px;margin:22px 0 26px;}
+  .meta-chip{font-family:'IBM Plex Mono',monospace;font-size:12px;border:1px solid var(--line);border-radius:999px;padding:7px 14px;color:var(--ink-soft);background:rgba(255,255,255,.4);}
+  .meta-chip b{color:var(--ink);}
+  .instructions{border-left:3px solid var(--gold);padding:4px 0 4px 18px;margin:24px 0;}
+  .instructions li{margin-bottom:8px;color:var(--ink-soft);font-size:14.5px;line-height:1.55;}
+  .id-row{display:flex;gap:14px;flex-wrap:wrap;margin:18px 0 6px;}
+  .id-field{flex:1 1 200px;display:flex;flex-direction:column;gap:6px;}
+  .id-field label{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);}
+  .id-field input, .id-field select{
+    font-family:'IBM Plex Sans',sans-serif;font-size:15px;color:var(--ink);
+    padding:11px 13px;border-radius:9px;border:1px solid var(--line);
+    background:rgba(255,255,255,.55);
+  }
+  .id-field select{appearance:auto;cursor:pointer;}
+  .id-field input:focus, .id-field select:focus{outline:2px solid var(--teal-light);border-color:transparent;}
+  .id-warn{display:none;color:var(--wrong);font-size:13px;margin:8px 0 18px;font-family:'IBM Plex Mono',monospace;}
+  .id-warn.show{display:block;}
+  .sync-note{font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--ink-soft);margin-top:10px;}
+  .sync-note.ok{color:var(--correct);}
+  .sync-note.err{color:var(--wrong);}
+  .key-link{
+    display:inline-block;margin-top:14px;font-family:'IBM Plex Mono',monospace;font-size:11.5px;
+    color:var(--ink-soft);text-decoration:underline;cursor:pointer;background:none;border:none;padding:0;
+  }
+  .key-link:hover{color:var(--teal);}
+  .modal-overlay{
+    display:none;position:fixed;inset:0;z-index:100;background:rgba(15,20,16,0.65);
+    align-items:center;justify-content:center;padding:20px;
+  }
+  .modal-overlay.show{display:flex;}
+  .modal-box{
+    background:var(--parchment);border-radius:14px;box-shadow:var(--shadow);
+    max-width:640px;width:100%;max-height:82vh;overflow-y:auto;padding:26px clamp(18px,4vw,32px);
+    position:relative;
+  }
+  .modal-box h3{font-family:'Fraunces',serif;font-size:20px;margin:0 0 4px;color:var(--ink);}
+  .modal-box .modal-sub{font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--ink-soft);margin-bottom:16px;}
+  .modal-close{
+    position:absolute;top:16px;right:16px;background:none;border:none;cursor:pointer;
+    font-size:20px;color:var(--ink-soft);line-height:1;padding:4px;
+  }
+  .modal-close:hover{color:var(--wrong);}
+  .key-list{display:flex;flex-direction:column;gap:0;}
+  .key-item{padding:9px 0;border-bottom:1px solid var(--line);font-size:13.5px;color:var(--ink);line-height:1.55;}
+  .key-item:last-child{border-bottom:none;}
+  .key-item b{color:var(--gold-dark);font-family:'IBM Plex Mono',monospace;margin-right:6px;}
+  .key-section-label{
+    font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--teal);margin:18px 0 4px;
+  }
+  .key-section-label:first-child{margin-top:0;}
+  .btn{appearance:none;border:none;cursor:pointer;font-family:'IBM Plex Sans',sans-serif;font-weight:600;font-size:15px;padding:14px 26px;border-radius:9px;background:var(--teal);color:#fbf7ea;transition:transform .15s ease, box-shadow .15s ease, background .15s ease;box-shadow:0 10px 22px -10px rgba(46,110,98,0.55);}
+  .btn:hover{background:#255a50;transform:translateY(-1px);}
+  .btn:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+  .btn.secondary{background:transparent;color:var(--teal);border:1.5px solid var(--teal);box-shadow:none;}
+  .btn.secondary:hover{background:rgba(46,110,98,0.08);}
+  .btn:disabled{opacity:.45;cursor:not-allowed;transform:none;}
+  #exam{display:none;}
+  .exam-bar{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;background:var(--bg-deep-2);color:var(--parchment);border-radius:12px;padding:12px 18px;margin-bottom:20px;box-shadow:var(--shadow);border:1px solid rgba(217,164,65,0.18);}
+  .exam-bar .progress-label{font-family:'IBM Plex Mono',monospace;font-size:12.5px;color:var(--teal-light);}
+  .timer{font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:17px;letter-spacing:.03em;color:var(--gold);display:flex;align-items:center;gap:8px;}
+  .timer.low{color:var(--wrong);}
+  .timer .dot{width:8px;height:8px;border-radius:50%;background:currentColor;animation:pulse 1.4s infinite;}
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.25;}}
+  .progress-track{height:5px;border-radius:99px;background:rgba(244,238,219,0.14);overflow:hidden;margin-top:8px;}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--teal-light));width:0%;transition:width .35s ease;}
+  .passage{background:var(--parchment-2);border-radius:12px;padding:24px clamp(16px,3vw,30px);margin-bottom:26px;border:1px dashed rgba(32,43,34,0.22);position:relative;}
+  .passage .tag{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);margin-bottom:10px;display:block;}
+  .passage h2{font-family:'Fraunces',serif;font-size:22px;margin:0 0 12px;color:var(--ink);}
+  .passage p{font-size:15px;line-height:1.75;color:var(--ink);margin:0 0 12px;}
+  .passage p:last-child{margin-bottom:0;}
+  .passage table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13.5px;}
+  .passage table th, .passage table td{border:1px solid var(--line);padding:8px 10px;text-align:left;}
+  .passage table th{background:rgba(46,110,98,0.10);color:var(--ink);}
+  .infographic-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:6px;}
+  @media (max-width:560px){.infographic-grid{grid-template-columns:1fr;}}
+  .info-item{display:flex;gap:10px;align-items:flex-start;}
+  .info-item .n{flex:0 0 auto;width:24px;height:24px;border-radius:50%;background:var(--gold);color:#fff;font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:12px;display:flex;align-items:center;justify-content:center;}
+  .info-item .t{font-size:13.5px;line-height:1.5;color:var(--ink);}
+  .info-item .t b{display:block;font-size:14px;margin-bottom:2px;}
+  .q-card{padding:18px 4px 22px;border-bottom:1px solid var(--line);}
+  .q-card:last-child{border-bottom:none;}
+  .q-stem{font-size:15px;font-weight:500;line-height:1.55;margin-bottom:6px;color:var(--ink);}
+  .q-stem .qn{color:var(--gold-dark);font-family:'IBM Plex Mono',monospace;margin-right:6px;}
+  .options{display:flex;flex-direction:column;gap:8px;}
+  .opt{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border-radius:9px;border:1px solid var(--line);cursor:pointer;font-size:14.5px;line-height:1.5;color:var(--ink-soft);transition:border-color .15s ease, background .15s ease;background:rgba(255,255,255,.35);}
+  .opt:hover{border-color:var(--teal-light);}
+  .opt input{margin-top:3px;accent-color:var(--teal);flex:0 0 auto;}
+  .opt.selected{border-color:var(--teal);background:rgba(46,110,98,0.08);color:var(--ink);}
+  .opt.reveal-correct{border-color:var(--correct);background:rgba(63,125,92,0.12);color:var(--ink);}
+  .opt.reveal-wrong{border-color:var(--wrong);background:rgba(181,83,60,0.10);color:var(--ink);}
+  .match-table{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:4px;}
+  .match-table th, .match-table td{border:1px solid var(--line);padding:9px 10px;text-align:center;}
+  .match-table th{background:rgba(46,110,98,0.10);color:var(--ink);font-weight:600;}
+  .match-table td:first-child{text-align:left;color:var(--ink);}
+  .match-table input{accent-color:var(--teal);width:17px;height:17px;}
+  .match-table tr.row-correct td:first-child{background:rgba(63,125,92,0.12);}
+  .match-table tr.row-wrong td:first-child{background:rgba(181,83,60,0.10);}
+  .controls{display:flex;justify-content:flex-end;gap:12px;margin-top:6px;}
+  #results{display:none;text-align:center;}
+  .score-ring{width:150px;height:150px;border-radius:50%;margin:6px auto 18px;display:flex;align-items:center;justify-content:center;flex-direction:column;background:conic-gradient(var(--gold) calc(var(--pct,0)*1%), rgba(32,43,34,0.10) 0);position:relative;}
+  .score-ring::before{content:"";position:absolute;inset:10px;border-radius:50%;background:var(--parchment);}
+  .score-ring .num{position:relative;font-family:'Fraunces',serif;font-weight:700;font-size:30px;color:var(--ink);}
+  .score-ring .lbl{position:relative;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink-soft);}
+  #results h2{font-family:'Fraunces',serif;font-size:24px;margin:0 0 6px;}
+  #results .verdict{font-family:'IBM Plex Mono',monospace;font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);margin-bottom:20px;}
+  .review-list{text-align:left;margin-top:22px;}
+  .review-item{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--line);font-size:14px;}
+  .review-item:last-child{border-bottom:none;}
+  .review-item .icon{flex:0 0 auto;width:20px;text-align:center;font-weight:700;}
+  .review-item .icon.ok{color:var(--correct);}
+  .review-item .icon.no{color:var(--wrong);}
+  .review-item .txt b{color:var(--ink);}
+  .time-note{font-family:'IBM Plex Mono',monospace;font-size:12.5px;color:var(--ink-soft);margin:-6px 0 16px;line-height:1.6;}
+  .time-note b{color:var(--ink);}
+  .review-item .txt{flex:1 1 auto;min-width:0;}
+  .key-exp-wrap{margin-top:6px;padding-left:10px;border-left:2px solid var(--correct);}
+  .key-exp-title{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--correct);margin-bottom:3px;}
+  .key-exp{font-size:12.5px;line-height:1.5;color:var(--ink-soft);margin:3px 0;}
+  .exp-box{margin-top:8px;}
+  .exp-title{font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--correct);margin:10px 0 2px;}
+  .exp-box summary{cursor:pointer;font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.04em;color:var(--teal);padding:4px 0;}
+  .exp-box summary:hover{color:var(--gold-dark);}
+  .exp-stem{font-size:13.5px;color:var(--ink);margin:8px 0 8px;line-height:1.5;}
+  .exp-opt{border:1px solid var(--line);border-radius:9px;padding:9px 12px;margin:7px 0;font-size:13.5px;line-height:1.55;background:rgba(255,255,255,.45);}
+  .exp-opt.is-correct{border-color:var(--correct);background:rgba(63,125,92,0.10);}
+  .exp-opt.is-wrong{border-color:rgba(181,83,60,.45);background:rgba(181,83,60,0.06);}
+  .exp-opt .exp-o{color:var(--ink);}
+  .exp-opt .exp-t{margin-top:5px;color:var(--ink-soft);}
+  .exp-opt .exp-badge{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;padding:2px 7px;border-radius:999px;margin-right:6px;color:#fff;background:var(--wrong);}
+  .exp-opt.is-correct .exp-badge{background:var(--correct);}
+  .exp-opt .exp-you{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--gold-dark);margin-left:6px;}
+  footer.note{max-width:880px;margin:26px auto 0;color:rgba(244,238,219,0.55);font-family:'IBM Plex Mono',monospace;font-size:11.5px;text-align:center;padding:0 20px;}
+  @media (max-width:560px){
+    .wrap{padding-left:max(14px, env(safe-area-inset-left));padding-right:max(14px, env(safe-area-inset-right));}
+    .masthead h1{font-size:21px;}
+    .masthead .eyebrow{font-size:10px;}
+    .badge-stamp{width:56px;height:56px;font-size:7.5px;}
+    .fs-btn{padding:5px 8px;font-size:9.5px;}
+    .fs-btn span{display:none;}
+    .fs-btn svg{width:15px;height:15px;}
+    .panel{padding:20px 16px;border-radius:12px;margin-bottom:16px;}
+    .exam-bar{flex-wrap:wrap;gap:8px;padding:10px 14px;}
+    .timer{font-size:15px;}
+    .passage{padding:16px 14px;}
+    .passage h2{font-size:19px;}
+    .passage p{font-size:14px;}
+    .q-stem{font-size:14px;}
+    .opt{padding:12px 12px;font-size:14px;min-height:44px;}
+    .btn{width:100%;padding:15px 22px;font-size:15px;}
+    .controls{flex-direction:column;}
+    .controls .btn, .controls .btn.secondary{width:100%;}
+    .score-ring{width:120px;height:120px;}
+    .score-ring .num{font-size:24px;}
+    .match-table{font-size:12px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="masthead">
+    <div>
+      <div class="eyebrow">Simulasi Latihan Mandiri · Bahasa Inggris Wajib</div>
+      <h1>Latihan Mandiri<br><em>Bahasa Inggris</em></h1>
+    </div>
+    <div class="masthead-right">
+      <div class="badge-stamp">LATIHAN<br>MANDIRI</div>
+      <button class="fs-btn" id="fsBtn" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3M16 3h3a2 2 0 0 1 2 2v3M8 21H5a2 2 0 0 1-2-2v-3M16 21h3a2 2 0 0 0 2-2v-3"/></svg>
+        <span id="fsBtnLabel">Layar Penuh</span>
+      </button>
+      <div class="ios-fs-hint" id="iosHint">Di iPhone: gunakan menu Bagikan → Tambah ke Layar Utama untuk mode layar penuh.</div>
+    </div>
+  </div>
+
+  <section class="panel" id="cover">
+    <div class="disclaimer"><b>Catatan:</b> Ini adalah <b>soal latihan mandiri</b> buatan sendiri untuk berlatih membaca berjenjang (literal, inferensial, evaluatif). Bukan soal TKA resmi/asli dari Kemendikbud, dan tidak boleh disebarluaskan sebagai bocoran soal ujian.</div>
+
+    <p class="lede">Paket latihan ini berisi <b>30 soal</b> dari <b>6 teks bacaan</b> orisinal (narrative, procedure/infografis, descriptive, analytical exposition, report, dan recount) dengan campuran <b>Pilihan Ganda biasa</b> dan <b>Pilihan Ganda Kompleks</b> (jawaban benar lebih dari satu), plus beberapa soal tabel pencocokan.</p>
+
+    <div class="meta-row">
+      <span class="meta-chip"><b>30</b> soal total</span>
+      <span class="meta-chip"><b>6</b> teks bacaan</span>
+      <span class="meta-chip"><b>75:00</b> menit waktu pengerjaan</span>
+      <span class="meta-chip">Skor otomatis + pembahasan</span>
+    </div>
+
+    <ul class="instructions">
+      <li>Bacalah setiap teks terlebih dahulu sebelum menjawab soal-soal di bawahnya.</li>
+      <li>Sebagian soal berbentuk <b>Pilihan Ganda Kompleks</b> — jawaban benar bisa lebih dari satu; centang semua yang menurutmu tepat.</li>
+      <li>Sebagian soal berbentuk <b>tabel pencocokan</b> — pilih satu kolom yang tepat untuk setiap baris.</li>
+      <li>Skor dinilai otomatis begitu kamu menekan <b>Selesai &amp; Lihat Hasil</b>.</li>
+      <li>Waktu berjalan mundur dari 75:00. Jika waktu habis, jawaban akan otomatis dikumpulkan.</li>
+    </ul>
+
+    <div class="id-row">
+      <div class="id-field">
+        <label for="studentName">Nama Lengkap</label>
+        <input type="text" id="studentName" placeholder="Tulis nama lengkapmu" autocomplete="off">
+      </div>
+      <div class="id-field">
+        <label for="studentClass">Kelas</label>
+        <select id="studentClass">
+          <option value="">Pilih kelas…</option>
+          <option value="XII-1">XII-1</option>
+          <option value="XII-2">XII-2</option>
+          <option value="XII-3">XII-3</option>
+          <option value="XII-4">XII-4</option>
+          <option value="XII-5">XII-5</option>
+          <option value="XII-6">XII-6</option>
+          <option value="XII-7">XII-7</option>
+          <option value="XII-8">XII-8</option>
+          <option value="XII-9">XII-9</option>
+          <option value="XII-10">XII-10</option>
+          <option value="XII-11">XII-11</option>
+        </select>
+      </div>
+    </div>
+    <div class="id-warn" id="idWarn">Isi nama dan pilih kelas terlebih dahulu sebelum memulai.</div>
+
+    <button class="btn" id="startBtn">Mulai Latihan</button>
+    <br>
+    <button class="btn secondary" id="keyBtn" type="button" style="margin-top:12px;">Teacher's Button</button>
+  </section>
+
+  <div class="modal-overlay" id="keyModal">
+    <div class="modal-box">
+      <button class="modal-close" id="keyModalClose" aria-label="Tutup">&times;</button>
+      <h3>Kunci Jawaban</h3>
+      <div class="modal-sub">Latihan Mandiri · Bahasa Inggris Wajib · 30 Soal</div>
+      <div class="key-list" id="keyList"></div>
+    </div>
+  </div>
+
+  <section id="exam">
+    <div class="exam-bar">
+      <div>
+        <div class="progress-label">Latihan Mandiri · Bahasa Inggris Wajib</div>
+        <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+      </div>
+      <div class="timer" id="timer"><span class="dot"></span><span id="timeLeft">75:00</span></div>
+    </div>
+
+    <div id="examSections"></div>
+
+    <div class="controls">
+      <button class="btn secondary" id="finishSecondary">Selesai &amp; Lihat Hasil</button>
+    </div>
+  </section>
+
+  <section class="panel" id="results">
+    <div class="score-ring" id="scoreRing">
+      <div class="num" id="scoreNum">0/30</div>
+      <div class="lbl">SKOR</div>
+    </div>
+    <h2 id="verdictTitle">Hasil Latihan</h2>
+    <div class="verdict" id="verdictSub"></div>
+    <div class="review-list" id="reviewList"></div>
+    <div class="controls" style="justify-content:center;margin-top:26px;">
+      <button class="btn secondary" id="restartBtn">Ulangi Latihan</button>
+    </div>
+  </section>
+
+  <footer class="note">Disusun oleh Taslim Siolimbona, S.Pd. — Soal latihan mandiri orisinal, bukan naskah resmi TKA.</footer>
+</div>
+
+<script>
+(function(){
+  const fsBtn = document.getElementById('fsBtn');
+  const fsLabel = document.getElementById('fsBtnLabel');
+  const iosHint = document.getElementById('iosHint');
+  const isIOS = /iP(hone|od|ad)/.test(navigator.platform) ||
+    (navigator.userAgent.includes('Mac') && 'ontouchend' in document);
+  const canFullscreen = document.documentElement.requestFullscreen ||
+    document.documentElement.webkitRequestFullscreen;
+  function isFs(){ return !!(document.fullscreenElement || document.webkitFullscreenElement); }
+  function updateLabel(){ fsLabel.textContent = isFs() ? 'Keluar Layar Penuh' : 'Layar Penuh'; }
+  async function toggleFullscreen(){
+    try{
+      if(!isFs()){
+        const el = document.documentElement;
+        if(el.requestFullscreen) await el.requestFullscreen();
+        else if(el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+      } else {
+        if(document.exitFullscreen) await document.exitFullscreen();
+        else if(document.webkitExitFullscreen) document.webkitExitFullscreen();
+      }
+    }catch(err){}
+    updateLabel();
+  }
+  if(isIOS && !canFullscreen){ fsBtn.style.display = 'none'; iosHint.style.display = 'block'; }
+  else {
+    fsBtn.addEventListener('click', toggleFullscreen);
+    document.addEventListener('fullscreenchange', updateLabel);
+    document.addEventListener('webkitfullscreenchange', updateLabel);
+  }
+  window.__requestFullscreenIfAvailable = function(){
+    if(canFullscreen && !isFs()){
+      const el = document.documentElement;
+      const p = el.requestFullscreen ? el.requestFullscreen() : el.webkitRequestFullscreen();
+      if(p && p.catch) p.catch(()=>{});
+      updateLabel();
+    }
+  };
+})();
+
+const sections = [
+  {
+    tag: "Teks 1 · Narrative Text",
+    title: "The Clever Rabbit and the Elephant",
+    passage: [
+      "In a green forest near a big river, there lived a small rabbit named Kiki. Kiki was very clever, even though she was much smaller than the other animals. One afternoon, a huge elephant named Baru came to drink at the river. Baru accidentally stepped on Kiki's small garden and destroyed all her vegetables.",
+      "Kiki was upset, but instead of shouting, she thought of a clever plan. She invited Baru to a race the next morning, promising a prize of sweet fruit. Baru laughed loudly. \u201cA tiny rabbit like you cannot beat me!\u201d he said.",
+      "The next day, all the animals gathered to watch. Kiki secretly asked her rabbit friends to hide along the race path. When Baru ran past each hiding spot, another rabbit that looked just like Kiki popped out ahead of him, again and again. Baru was confused and exhausted, thinking Kiki was always ahead of him.",
+      "When Baru finally reached the finish line, Kiki was already there, smiling. Baru was amazed. \u201cHow can you be this fast?\u201d he asked. Kiki laughed and explained her trick. Baru realized that being big and strong was not everything; using your brain was just as important. From that day, Baru always asked Kiki for advice before doing anything in the forest."
+    ],
+    source: "Teks latihan orisinal.",
+    questions: [
+      {
+        type:"mc",
+        q:"Which option best summarizes the story?",
+        options:[
+          "Beginning: A rabbit wanted to make friends with an elephant. Problem: The elephant refused to talk to her. Solution: The rabbit gave the elephant a gift. Lesson: Kindness can win any friendship.",
+          "Beginning: An elephant accidentally destroyed a rabbit's garden. Problem: The rabbit challenged him to a race to prove a point. Solution: The rabbit used a clever trick with her lookalike friends to win. Lesson: Being smart can be more powerful than being big and strong.",
+          "Beginning: Two elephants argued over a garden. Problem: Neither wanted to apologize. Solution: A rabbit judged the argument fairly. Lesson: Always listen to a wise judge.",
+          "Beginning: A rabbit lost a race against an elephant. Problem: She felt sad and jealous. Solution: The elephant helped her train harder. Lesson: Practice makes perfect.",
+          "Beginning: A rabbit built a garden near a river. Problem: A flood destroyed it. Solution: The animals rebuilt it together. Lesson: Teamwork solves natural disasters."
+        ],
+        correct:1
+      },
+      {
+        type:"mcma",
+        q:"Which of the following statements best convey the message of the story? (Jawaban lebih dari satu)",
+        options:[
+          "Physical strength is always more important than intelligence",
+          "Being clever can help you solve problems even if you are small",
+          "It is fine to trick others as long as you win",
+          "Big and strong creatures should always be respected without question",
+          "Thinking creatively can overcome a disadvantage in size or strength"
+        ],
+        correct:[1,4]
+      },
+      {
+        type:"mc",
+        q:"Why did Baru agree to race against Kiki?",
+        options:[
+          "He wanted to apologize for destroying her garden",
+          "He was confident that a small rabbit could never beat him",
+          "He wanted to win the sweet fruit prize for his family",
+          "He was forced by the other animals to join",
+          "He wanted to test his new running shoes"
+        ],
+        correct:1
+      },
+      {
+        type:"mcma",
+        q:"Before reading the ending, which outcomes would you predict from the race? (Jawaban lebih dari satu)",
+        options:[
+          "Baru wins easily because he is much bigger and faster",
+          "Kiki uses a clever strategy instead of relying on speed alone",
+          "The race is cancelled because Baru refuses to run",
+          "Kiki asks her rabbit friends for help along the way",
+          "Baru and Kiki decide not to race at all"
+        ],
+        correct:[1,3]
+      },
+      {
+        type:"mcma",
+        q:"Which sentences from the story help you understand Kiki's character? (Jawaban lebih dari satu)",
+        options:[
+          "\u201cKiki was very clever, even though she was much smaller than the other animals.\u201d",
+          "\u201cBaru accidentally stepped on Kiki's small garden and destroyed all her vegetables.\u201d",
+          "\u201cKiki secretly asked her rabbit friends to hide along the race path.\u201d",
+          "\u201cAll the animals gathered to watch.\u201d",
+          "\u201cBaru realized that being big and strong was not everything.\u201d"
+        ],
+        correct:[0,2]
+      }
+    ]
+  },
+  {
+    tag: "Teks 2 · Infografis / Procedure Text",
+    title: "Tips to Reduce Plastic Waste at School",
+    infographic:[
+      {n:1,t:"Bring a Reusable Water Bottle",d:"Avoid buying bottled water every day; refill your own bottle instead."},
+      {n:2,t:"Use a Lunch Box",d:"Pack food in reusable containers instead of plastic wrap or bags."},
+      {n:3,t:"Say No to Plastic Straws",d:"Choose paper straws or no straw at all."},
+      {n:4,t:"Bring Your Own Bag",d:"Use a cloth bag when buying snacks or supplies."},
+      {n:5,t:"Separate Your Waste",d:"Sort plastic, paper, and organic waste into different bins."},
+      {n:6,t:"Reuse Plastic Containers",d:"Use old containers for storage instead of throwing them away."},
+      {n:7,t:"Join a Cleanup Day",d:"Take part in school clean-up activities once a month."},
+      {n:8,t:"Choose Refillable Stationery",d:"Use refillable pens and markers instead of disposable ones."},
+      {n:9,t:"Educate Your Friends",d:"Share simple tips about reducing plastic with classmates."},
+      {n:10,t:"Report Excess Plastic Use",d:"Tell teachers if the canteen uses too much single-use plastic."}
+    ],
+    source: "Teks latihan orisinal.",
+    questions:[
+      {
+        type:"mc",
+        q:"Based on the infographic, one simple daily habit that helps reduce plastic waste is ....",
+        options:[
+          "joining a cleanup day",
+          "bringing a reusable water bottle",
+          "reporting excess plastic use",
+          "educating your friends",
+          "choosing refillable stationery"
+        ],
+        correct:1
+      },
+      {
+        type:"table",
+        q:"Based on the infographic, determine whether each tip is a Daily Habit or an Occasional Action.",
+        cols:["Daily Habit","Occasional Action"],
+        rows:[
+          "Bring a reusable water bottle",
+          "Join a cleanup day",
+          "Use a lunch box"
+        ],
+        correct:[0,1,0]
+      },
+      {
+        type:"mc",
+        q:"From the options provided, choose the sequence that best reflects the order of tips in the infographic.",
+        options:[
+          "Bring a lunch box \u2192 Say no to straws \u2192 Join cleanup day \u2192 Report excess plastic \u2192 Bring your own bag",
+          "Bring a reusable bottle \u2192 Use a lunch box \u2192 Say no to plastic straws \u2192 Bring your own bag \u2192 Separate your waste",
+          "Separate your waste \u2192 Reuse containers \u2192 Bring reusable bottle \u2192 Educate friends \u2192 Join cleanup day",
+          "Report excess plastic \u2192 Educate friends \u2192 Reuse containers \u2192 Bring lunch box \u2192 Bring bottle",
+          "Choose refillable stationery \u2192 Reuse containers \u2192 Bring lunch box \u2192 Say no to straws \u2192 Join cleanup"
+        ],
+        correct:1
+      },
+      {
+        type:"mcma",
+        q:"Which of the following statements best reflect the purpose of the infographic? (Jawaban lebih dari satu)",
+        options:[
+          "To force students to stop using plastic completely at once",
+          "To give students simple, practical habits to reduce plastic waste",
+          "To encourage students to take small, consistent actions for the environment",
+          "To explain the history of plastic production",
+          "To show that reducing plastic waste is a shared responsibility"
+        ],
+        correct:[1,2,4]
+      },
+      {
+        type:"mcma",
+        q:"If a school wants to start reducing plastic waste this month, which tips would be the easiest to begin with immediately? (Jawaban lebih dari satu)",
+        options:[
+          "Bring a reusable water bottle",
+          "Organize a national plastic recycling policy",
+          "Use a lunch box",
+          "Build a new waste treatment factory",
+          "Say no to plastic straws"
+        ],
+        correct:[0,2,4]
+      }
+    ]
+  },
+  {
+    tag: "Teks 3 · Descriptive Text",
+    title: "Lake Toba",
+    passage:[
+      "Lake Toba is one of the largest volcanic lakes in the world, located in North Sumatra, Indonesia. It was formed by a massive volcanic eruption thousands of years ago, leaving behind a deep basin that slowly filled with water. In the middle of the lake sits Samosir Island, which is almost as big as the country of Singapore.",
+      "The water of Lake Toba is calm and cool, surrounded by green hills and small villages. Traditional Batak houses with curved roofs can be seen along the shoreline, especially on Samosir Island. Local people fish in the lake and grow crops such as coffee, rice, and vegetables on the fertile land nearby.",
+      "Visitors often come to Lake Toba to enjoy the fresh air, take boat rides across the water, and learn about Batak culture and traditions. Many small cafes and guesthouses line the coast, offering views of the misty hills at sunrise. At night, the lake becomes very quiet, and the stars reflect beautifully on its still surface.",
+      "Lake Toba is not only a natural wonder but also a place full of history and culture. It reminds visitors of the power of nature and the resilience of the communities living around it."
+    ],
+    source: "Teks latihan orisinal.",
+    questions:[
+      {
+        type:"mcma",
+        q:"Which of the following descriptions are mentioned clearly in the text? (Jawaban lebih dari satu)",
+        options:[
+          "Lake Toba was formed by a massive volcanic eruption",
+          "Samosir Island is located in the middle of the lake",
+          "Lake Toba is the deepest lake in Asia",
+          "Local people grow coffee, rice, and vegetables nearby",
+          "The lake was built by the Dutch colonial government"
+        ],
+        correct:[0,1,3]
+      },
+      {
+        type:"mc",
+        q:"What does the phrase \u201cthe stars reflect beautifully on its still surface\u201d most likely suggest about the lake at night?",
+        options:[
+          "The lake becomes dangerous and stormy at night",
+          "The lake is calm and clear enough to mirror the sky",
+          "The lake freezes during the cold season",
+          "The lake is crowded with boats at night",
+          "The lake changes color under moonlight"
+        ],
+        correct:1
+      },
+      {
+        type:"mc",
+        q:"Which of the following best represents the main idea implied by the text?",
+        options:[
+          "Lake Toba is dangerous and should be avoided by tourists",
+          "Lake Toba is only important for its natural beauty",
+          "Lake Toba combines natural beauty with rich local culture and history",
+          "Lake Toba is mainly used for fishing industries",
+          "Lake Toba was recently discovered by scientists"
+        ],
+        correct:2
+      },
+      {
+        type:"mc",
+        q:"Which detail would best encourage tourists to visit Lake Toba?",
+        options:[
+          "Visitors can learn about Batak culture and enjoy boat rides",
+          "Visitors must bring their own boats to cross the lake",
+          "Visitors are not allowed to enter Samosir Island",
+          "Visitors need a special permit to see the hills",
+          "Visitors can only visit during a specific season"
+        ],
+        correct:0
+      },
+      {
+        type:"mcma",
+        q:"Which parts of the text support the idea that Lake Toba is both a natural and cultural attraction? (Jawaban lebih dari satu)",
+        options:[
+          "Traditional Batak houses can be seen along the shoreline",
+          "The lake was formed by a volcanic eruption",
+          "Visitors learn about Batak culture and traditions",
+          "The lake is the smallest lake in Indonesia",
+          "Samosir Island was built entirely by tourists"
+        ],
+        correct:[0,2]
+      }
+    ]
+  },
+  {
+    tag: "Teks 4 · Analytical Exposition Text",
+    title: "Why Students Should Read Books Regularly",
+    passage:[
+      "Reading is often seen as an old-fashioned habit in the age of smartphones and social media. However, students who read books regularly gain benefits that scrolling through short videos cannot provide. Reading should remain an important part of student life.",
+      "First, reading improves vocabulary and comprehension skills. When students meet new words in context, they naturally learn their meaning and correct usage. This skill directly supports better writing and clearer thinking.",
+      "Second, reading builds focus and patience. Unlike short videos that are designed to grab attention for only a few seconds, a book requires sustained concentration. Students who read regularly often find it easier to focus during long lessons or exams.",
+      "Third, reading widens a student's perspective. Through stories and information from different cultures and time periods, readers learn to understand experiences beyond their own daily life. This can build empathy and open-mindedness.",
+      "Finally, reading is a low-cost, accessible activity. Public libraries, school libraries, and free digital books make reading available to almost everyone, regardless of financial background.",
+      "For these reasons, schools and parents should continue to encourage students to set aside time for reading, even a few pages every day, rather than letting it disappear completely."
+    ],
+    table:{
+      title:"Table 1. Student Reading Habits Survey",
+      head:["Category","Percentage","Notes"],
+      rows:[
+        ["Students who read for at least 15 minutes daily","32%","Mostly fiction books"],
+        ["Students who prefer digital books over print","41%","Read on phones or tablets"],
+        ["Students who visit the library weekly","18%","Mainly to borrow books"],
+        ["Students who say they \u201chave no time to read\u201d","47%","Most common reason given"],
+        ["Students whose reading habit improved after joining a reading challenge","55%","Based on school program data"]
+      ]
+    },
+    source: "Teks latihan orisinal.",
+    questions:[
+      {
+        type:"table",
+        q:"Based on the text, classify each benefit as a Cognitive Benefit or a Social/Emotional Benefit.",
+        cols:["Cognitive Benefit","Social/Emotional Benefit"],
+        rows:[
+          "Improves vocabulary and comprehension",
+          "Builds focus and patience",
+          "Widens perspective and builds empathy"
+        ],
+        correct:[0,0,1]
+      },
+      {
+        type:"mcma",
+        q:"According to the text, which of the following are benefits of reading regularly? (Jawaban lebih dari satu)",
+        options:[
+          "Improves vocabulary and comprehension skills",
+          "Guarantees higher exam scores immediately",
+          "Builds focus and patience over short attention spans",
+          "Makes reading a very expensive hobby",
+          "Widens a student's perspective and builds empathy"
+        ],
+        correct:[0,2,4]
+      },
+      {
+        type:"mcma",
+        q:"Who is most likely the target audience of this text? (Jawaban lebih dari satu)",
+        options:[
+          "Students who want to build better study habits",
+          "Professional book publishers",
+          "Parents and teachers who want to support students' learning",
+          "Software developers designing short video apps",
+          "High school readers deciding how to spend their free time"
+        ],
+        correct:[0,2,4]
+      },
+      {
+        type:"mc",
+        q:"Which information from the table would best support the author's argument for encouraging reading?",
+        options:[
+          "47% of students say they have no time to read",
+          "41% of students prefer digital books",
+          "55% of students improved their reading habit after joining a reading challenge",
+          "18% of students visit the library weekly",
+          "32% of students read digital books daily"
+        ],
+        correct:2
+      },
+      {
+        type:"mcma",
+        q:"Which of the following statements are supported by clear facts in the text and table? (Jawaban lebih dari satu)",
+        options:[
+          "32% of students read for at least 15 minutes daily",
+          "Reading always guarantees success in every subject",
+          "A reading challenge program helped improve students' reading habits",
+          "Public libraries make reading accessible regardless of financial background",
+          "Most students already read more than enough books"
+        ],
+        correct:[0,2,3]
+      }
+    ]
+  },
+  {
+    tag: "Teks 5 · Report Text",
+    title: "Renewable Energy Sources",
+    passage:[
+      "Renewable energy comes from natural sources that are replenished constantly, unlike fossil fuels such as coal and oil. The most common types of renewable energy include solar, wind, hydropower, and geothermal energy.",
+      "Solar energy is produced by converting sunlight into electricity using solar panels. It is widely used because sunlight is available almost everywhere, although its efficiency can be reduced on cloudy days.",
+      "Wind energy is generated by wind turbines that convert the movement of air into electrical power. Countries with strong, consistent winds, especially coastal areas, often build large wind farms.",
+      "Hydropower uses the movement of flowing or falling water, usually from dams, to generate electricity. It is one of the oldest forms of renewable energy and provides a large share of electricity in many countries.",
+      "Geothermal energy comes from heat stored beneath the Earth's surface. It is commonly used in areas with volcanic activity, where hot underground water and steam can be tapped for power generation.",
+      "Compared to fossil fuels, renewable energy sources produce far less pollution and do not run out over time. However, building renewable energy infrastructure can require high initial costs and depends on suitable geographic conditions."
+    ],
+    source: "Teks latihan orisinal.",
+    questions:[
+      {
+        type:"mcma",
+        q:"Based on the text, which of the following are types of renewable energy mentioned? (Jawaban lebih dari satu)",
+        options:[
+          "Solar energy",
+          "Coal energy",
+          "Wind energy",
+          "Hydropower",
+          "Petroleum energy"
+        ],
+        correct:[0,2,3]
+      },
+      {
+        type:"mc",
+        q:"Which factor most affects the efficiency of solar energy, according to the text?",
+        options:[
+          "The price of electricity in a country",
+          "Weather conditions such as cloudy days",
+          "The number of solar panel factories",
+          "The size of the country's population",
+          "The distance from the equator"
+        ],
+        correct:1
+      },
+      {
+        type:"mc",
+        q:"What is the main purpose of this text?",
+        options:[
+          "To persuade readers to stop using fossil fuels immediately",
+          "To inform readers about different types of renewable energy",
+          "To criticize governments for not using enough solar panels",
+          "To explain the history of the industrial revolution",
+          "To compare the price of electricity worldwide"
+        ],
+        correct:1
+      },
+      {
+        type:"table",
+        q:"Match each energy type to its main power source.",
+        cols:["Sunlight","Moving air or water"],
+        rows:[
+          "Solar energy",
+          "Wind energy",
+          "Hydropower"
+        ],
+        correct:[0,1,1]
+      },
+      {
+        type:"mcma",
+        q:"Which of the following statements are supported by facts in the text? (Jawaban lebih dari satu)",
+        options:[
+          "Renewable energy produces far less pollution than fossil fuels",
+          "Geothermal energy is common in areas with volcanic activity",
+          "Renewable energy infrastructure never requires high costs",
+          "Hydropower is one of the oldest forms of renewable energy",
+          "Wind energy works best in areas without any wind"
+        ],
+        correct:[0,1,3]
+      }
+    ]
+  },
+  {
+    tag: "Teks 6 · Recount Text",
+    title: "My First Volcano Hike",
+    passage:[
+      "Last July, my family and I visited Mount Bromo for the first time. We woke up at two in the morning because our guide said the sunrise view was the best part of the trip. At first, I felt nervous because the road up the mountain was dark, narrow, and quite cold.",
+      "After almost an hour of driving in a jeep, we reached a viewpoint called King Kong Hill. The air was freezing, but hundreds of people were already standing there, waiting quietly for the sun to rise. When the sky slowly turned orange and pink, everyone cheered softly. It was one of the most beautiful things I had ever seen.",
+      "After watching the sunrise, we walked down to the sea of sand, a wide area of volcanic ash surrounding the mountain. We rode horses partway before climbing almost 250 steps to reach the edge of the crater. Standing there, I could see smoke rising from inside the volcano, and I could smell a strong scent of sulfur in the air.",
+      "By the time we returned to our hotel, I was extremely tired, but very happy. That trip taught me that waking up early and facing a bit of discomfort can lead to unforgettable experiences."
+    ],
+    source: "Teks latihan orisinal.",
+    questions:[
+      {
+        type:"mc",
+        q:"Which of the following best summarizes the recount?",
+        options:[
+          "The writer visited Mount Bromo, watched the sunrise, and climbed to the crater despite the cold and tiring journey.",
+          "The writer climbed a mountain to study volcanic ash for a school project.",
+          "The writer went camping near Mount Bromo and got lost in the dark.",
+          "The writer visited Mount Bromo only to ride horses across the sea of sand.",
+          "The writer's family canceled their trip to Mount Bromo due to bad weather."
+        ],
+        correct:0
+      },
+      {
+        type:"mcma",
+        q:"Which of the following feelings did the writer experience during the trip? (Jawaban lebih dari satu)",
+        options:[
+          "Nervous, because the road up the mountain was dark and cold",
+          "Bored, because nothing interesting happened during the trip",
+          "Amazed, when watching the sunrise change colors",
+          "Tired, after climbing almost 250 steps to the crater",
+          "Angry, because the guide arrived late"
+        ],
+        correct:[0,2,3]
+      },
+      {
+        type:"mc",
+        q:"Why did the writer's family wake up at two in the morning?",
+        options:[
+          "To avoid heavy traffic on the way home",
+          "To catch the best view of the sunrise",
+          "To avoid the strong smell of sulfur",
+          "Because the hotel had a strict curfew",
+          "To meet other tourists before the tour started"
+        ],
+        correct:1
+      },
+      {
+        type:"mcma",
+        q:"Which sentences show that the hike required physical effort? (Jawaban lebih dari satu)",
+        options:[
+          "We woke up at two in the morning",
+          "We rode horses partway before climbing almost 250 steps",
+          "The air was freezing, but hundreds of people were already standing there",
+          "I could smell a strong scent of sulfur in the air",
+          "By the time we returned to our hotel, I was extremely tired"
+        ],
+        correct:[1,4]
+      },
+      {
+        type:"mc",
+        q:"What can we learn from the writer's experience?",
+        options:[
+          "Traveling at night is always dangerous and should be avoided",
+          "Facing early mornings and physical discomfort can lead to rewarding experiences",
+          "Watching a sunrise is not worth the effort of waking up early",
+          "Climbing a volcano is only suitable for professional athletes",
+          "Horses are the safest way to travel through volcanic areas"
+        ],
+        correct:1
+      }
+    ]
+  }
+];
+
+// ---------- Penjelasan tiap pilihan jawaban (Bahasa Indonesia) ----------
+// Kunci = nomor soal (1–30). Untuk soal pilihan ganda/PG kompleks: satu penjelasan per pilihan (A, B, C, ...).
+// Untuk soal tabel: satu penjelasan per baris.
+const EXPLANATIONS = {
+  1: [
+    "Tidak sesuai isi cerita. Kiki tidak ingin berteman dengan Baru dan tidak memberinya hadiah; ia justru kesal karena kebunnya rusak lalu menantang Baru berlomba.",
+    "Tepat. Awal: Baru tidak sengaja merusak kebun Kiki. Masalah: Kiki menantang Baru berlomba. Solusi: Kiki memakai trik teman-teman kelinci yang mirip dengannya. Pelajaran: kecerdasan bisa lebih berguna daripada tubuh besar dan kuat.",
+    "Salah. Cerita tidak menyebut dua gajah yang bertengkar dan tidak ada tokoh hakim. Tokoh utamanya adalah Kiki si kelinci dan Baru si gajah.",
+    "Salah. Kiki tidak kalah dalam lomba; ia justru menang. Ia juga tidak sedih atau iri, dan Baru tidak melatihnya.",
+    "Salah. Kebun Kiki rusak karena terinjak Baru, bukan karena banjir. Tidak ada adegan para hewan membangun kebun kembali bersama-sama."
+  ],
+  2: [
+    "Salah. Pernyataan ini bertentangan dengan cerita: Baru yang besar dan kuat justru kalah, lalu menyadari bahwa kekuatan fisik bukan segalanya.",
+    "Benar. Kiki bertubuh kecil, tetapi kecerdikannya membuatnya berhasil menyelesaikan masalah dan menang.",
+    "Salah. Cerita tidak mengajarkan bahwa menipu itu boleh asalkan menang. Pesan utamanya adalah tentang pentingnya berpikir cerdas, bukan membenarkan segala cara.",
+    "Salah. Baru yang besar dan kuat ternyata dikalahkan. Cerita tidak menyampaikan bahwa makhluk besar harus dihormati tanpa syarat.",
+    "Benar. Rencana kreatif Kiki (menggunakan teman-teman yang mirip dengannya) mengalahkan kekurangannya dalam hal ukuran dan kekuatan."
+  ],
+  3: [
+    "Salah. Baru tidak meminta maaf. Setelah menginjak kebun Kiki, ia justru menertawakan ajakan lomba dari Kiki.",
+    "Benar. Baru tertawa dan berkata bahwa kelinci kecil tidak mungkin mengalahkannya. Ini menunjukkan ia sangat percaya diri.",
+    "Salah. Hadiah buah manis memang dijanjikan Kiki, tetapi teks tidak menyebut Baru ingin memenangkannya untuk keluarganya. Alasan Baru adalah rasa percaya dirinya.",
+    "Salah. Tidak ada yang memaksa Baru. Hewan-hewan lain hanya berkumpul untuk menonton lomba.",
+    "Salah. Tidak ada satu pun bagian teks yang menyebut sepatu lari; pilihan ini tidak didukung isi cerita."
+  ],
+  4: [
+    "Kurang tepat sebagai prediksi. Teks sebelumnya menekankan bahwa Kiki cerdas dan sudah menyiapkan rencana, sehingga lomba tidak akan berjalan mudah bagi Baru.",
+    "Benar. Kiki digambarkan sangat cerdas dan \"thought of a clever plan\", jadi wajar diprediksi ia memakai strategi, bukan hanya mengandalkan kecepatan.",
+    "Salah. Baru menertawakan tantangan itu dan tampak menerimanya. Tidak ada petunjuk bahwa ia menolak berlari.",
+    "Benar. Kiki secara diam-diam meminta teman-teman kelincinya bersembunyi di sepanjang lintasan, sehingga ia mendapat bantuan dari mereka.",
+    "Salah. Baru sudah menerima ajakan lomba, dan lomba direncanakan berlangsung keesokan paginya, jadi keduanya jelas akan berlomba."
+  ],
+  5: [
+    "Benar. Kalimat ini langsung menggambarkan sifat Kiki: cerdas meskipun tubuhnya kecil.",
+    "Salah. Kalimat ini menceritakan peristiwa awal (kebun terinjak) dan perbuatan Baru, bukan sifat Kiki.",
+    "Benar. Tindakan Kiki meminta bantuan temannya secara diam-diam menunjukkan bahwa ia pandai menyusun strategi.",
+    "Salah. Kalimat ini hanya menggambarkan situasi ketika hewan-hewan berkumpul dan tidak memberi informasi tentang karakter Kiki.",
+    "Salah. Kalimat ini menunjukkan pelajaran yang disadari Baru, bukan karakter Kiki."
+  ],
+  6: [
+    "Salah. Menurut infografis, hari bersih-bersih dilakukan satu kali sebulan, jadi bukan kebiasaan harian.",
+    "Benar. Tip nomor 1 meminta siswa mengisi ulang botol sendiri agar tidak membeli air kemasan setiap hari, sehingga ini adalah kebiasaan sederhana yang dilakukan setiap hari.",
+    "Salah. Melapor kepada guru dilakukan hanya bila kantin terlalu banyak memakai plastik sekali pakai, bukan rutinitas harian.",
+    "Salah. Berbagi tips dengan teman adalah tindakan sesekali dan tidak langsung mengurangi sampah plastik setiap hari.",
+    "Salah. Memilih alat tulis isi ulang dilakukan saat membeli perlengkapan, bukan kebiasaan yang diulang setiap hari seperti membawa botol minum."
+  ],
+  7: [
+    "Daily Habit. Botol minum diisi ulang setiap hari sebagai pengganti membeli air kemasan (tip 1).",
+    "Occasional Action. Infografis menyebut kegiatan bersih-bersih sekolah hanya dilakukan sebulan sekali (tip 7).",
+    "Daily Habit. Bekal dibawa setiap hari dengan wadah pakai ulang sebagai pengganti plastik pembungkus (tip 2)."
+  ],
+  8: [
+    "Salah. Urutan ini melompat-lompat: dimulai dari kotak bekal (tip 2), lalu sedotan (tip 3), lalu hari bersih-bersih (tip 7), sehingga tidak sesuai nomor pada infografis.",
+    "Benar. Urutannya sama dengan infografis: botol minum (1), kotak bekal (2), tanpa sedotan plastik (3), membawa tas sendiri (4), memilah sampah (5).",
+    "Salah. Urutan ini dimulai dari memilah sampah (tip 5), padahal tip pertama pada infografis adalah membawa botol minum.",
+    "Salah. Urutan ini hampir terbalik: dimulai dari melaporkan penggunaan plastik (tip 10) dan diakhiri dengan botol minum (tip 1).",
+    "Salah. Urutan ini dimulai dari alat tulis isi ulang (tip 8) dan meloncat ke tip lain, sehingga tidak sesuai urutan infografis."
+  ],
+  9: [
+    "Salah. Infografis menawarkan langkah-langkah sederhana secara bertahap, bukan memaksa siswa berhenti memakai plastik sepenuhnya secara tiba-tiba.",
+    "Benar. Setiap tip berisi kebiasaan sederhana dan mudah dipraktikkan, seperti membawa botol atau kotak bekal.",
+    "Benar. Tip-tipnya berupa tindakan kecil yang bisa dilakukan terus-menerus demi lingkungan.",
+    "Salah. Infografis tidak membahas sejarah produksi plastik sama sekali.",
+    "Benar. Tip seperti mengedukasi teman, ikut hari bersih-bersih, dan melapor kepada guru menunjukkan bahwa mengurangi sampah plastik adalah tanggung jawab bersama."
+  ],
+  10: [
+    "Benar. Cukup membawa botol sendiri dari rumah, tanpa biaya besar dan bisa langsung dilakukan bulan ini.",
+    "Salah. Menyusun kebijakan daur ulang nasional bukan hal yang bisa dilakukan sebuah sekolah dalam waktu singkat.",
+    "Benar. Membawa kotak bekal mudah dan langsung bisa dimulai.",
+    "Salah. Membangun pabrik pengolahan limbah butuh biaya besar dan waktu lama, jadi bukan langkah yang mudah dimulai segera.",
+    "Benar. Menolak sedotan plastik atau memakai sedotan kertas bisa dilakukan seketika."
+  ],
+  11: [
+    "Benar. Paragraf 1 menyebut Danau Toba terbentuk oleh letusan gunung berapi yang sangat besar.",
+    "Benar. Paragraf 1 menyebut Pulau Samosir berada di tengah danau.",
+    "Salah. Teks hanya menyebut Danau Toba sebagai salah satu danau vulkanik terbesar di dunia, bukan danau terdalam di Asia.",
+    "Benar. Paragraf 2 menyebut penduduk setempat menanam kopi, padi, dan sayuran di tanah subur sekitar danau.",
+    "Salah. Danau terbentuk oleh letusan gunung berapi, bukan dibangun oleh pemerintah kolonial Belanda."
+  ],
+  12: [
+    "Salah. Teks menyebut danau menjadi sangat tenang pada malam hari, bukan berbahaya atau berbadai.",
+    "Benar. Permukaan air yang tenang dan diam dapat memantulkan bintang-bintang, sehingga danau digambarkan tenang dan jernih.",
+    "Salah. Danau berada di Indonesia yang beriklim tropis, dan teks tidak menyebut air membeku.",
+    "Salah. Teks menyebut danau sangat sunyi pada malam hari, bukan ramai oleh perahu.",
+    "Salah. Kalimat itu membahas pantulan bintang, bukan perubahan warna danau akibat cahaya bulan."
+  ],
+  13: [
+    "Salah. Teks justru menggambarkan Danau Toba dengan indah dan tidak menyebutnya berbahaya.",
+    "Salah. Terlalu sempit. Kalimat terakhir menyebut danau ini juga penuh sejarah dan budaya, bukan hanya keindahan alam.",
+    "Benar. Teks memadukan keindahan alam (danau, perbukitan, pulau) dengan budaya Batak dan sejarahnya.",
+    "Salah. Menangkap ikan hanyalah salah satu detail pendukung, bukan gagasan utama teks.",
+    "Salah. Teks menyebut danau terbentuk ribuan tahun lalu dan tidak menyebut penemuan baru oleh ilmuwan."
+  ],
+  14: [
+    "Benar. Naik perahu dan belajar budaya Batak adalah kegiatan menarik yang mendorong wisatawan berkunjung.",
+    "Salah. Kewajiban membawa perahu sendiri justru akan menyulitkan wisatawan.",
+    "Salah. Larangan masuk ke Pulau Samosir akan mengurangi minat wisatawan.",
+    "Salah. Izin khusus untuk melihat perbukitan adalah hambatan, bukan daya tarik.",
+    "Salah. Pembatasan hanya pada musim tertentu mengurangi daya tarik dan tidak disebut dalam teks."
+  ],
+  15: [
+    "Benar. Rumah adat Batak di tepi danau adalah unsur budaya, sehingga mendukung sisi budaya sebagai daya tarik.",
+    "Salah. Terbentuknya danau oleh letusan gunung berapi mendukung sisi alam saja, bukan sisi budaya.",
+    "Benar. Belajar tentang budaya dan tradisi Batak menunjukkan danau ini juga merupakan daya tarik budaya.",
+    "Salah. Pernyataan ini tidak ada di teks dan tidak mendukung gagasan daya tarik alam maupun budaya.",
+    "Salah. Pernyataan ini tidak masuk akal dan tidak ada dalam teks."
+  ],
+  16: [
+    "Cognitive Benefit. Kosakata dan pemahaman bacaan berkaitan dengan kemampuan berpikir dan berbahasa.",
+    "Cognitive Benefit. Fokus dan kesabaran (konsentrasi berkelanjutan) merupakan kemampuan mental atau kognitif, sesuai paragraf ketiga.",
+    "Social/Emotional Benefit. Memahami pengalaman orang lain, empati, dan sikap terbuka berkaitan dengan aspek sosial-emosional, sesuai paragraf keempat."
+  ],
+  17: [
+    "Benar. Paragraf 2 menyebut membaca meningkatkan kosakata dan kemampuan memahami.",
+    "Salah. Teks tidak menjanjikan nilai ujian langsung naik. Ia hanya menyebut siswa lebih mudah fokus saat ujian.",
+    "Benar. Paragraf 3 menyebut membaca membangun fokus dan kesabaran dibandingkan video pendek.",
+    "Salah. Paragraf 5 menyebut membaca adalah kegiatan yang murah dan mudah diakses, bukan hobi yang mahal.",
+    "Benar. Paragraf 4 menyebut membaca memperluas sudut pandang dan membangun empati."
+  ],
+  18: [
+    "Benar. Teks ditulis untuk mengajak siswa mengembangkan kebiasaan belajar yang baik melalui membaca.",
+    "Salah. Penerbit buku profesional bukan pihak yang diajak bicara dalam teks ini.",
+    "Benar. Paragraf terakhir mengajak sekolah dan orang tua terus mendorong siswa menyisihkan waktu untuk membaca.",
+    "Salah. Pengembang aplikasi video pendek hanya disinggung sebagai pembanding, bukan sasaran pembaca.",
+    "Benar. Siswa SMA yang sedang memilih cara memanfaatkan waktu luang adalah pembaca yang tepat untuk teks ini."
+  ],
+  19: [
+    "Salah. Fakta bahwa 47% siswa tidak punya waktu membaca justru menunjukkan hambatan, sehingga tidak mendukung ajakan penulis.",
+    "Salah. Data ini hanya menunjukkan preferensi format buku dan tidak membuktikan manfaat atau keberhasilan mendorong kebiasaan membaca.",
+    "Benar. Peningkatan kebiasaan membaca pada 55% siswa setelah mengikuti tantangan membaca adalah bukti bahwa dorongan membaca berhasil.",
+    "Salah. Hanya 18% siswa mengunjungi perpustakaan tiap minggu, angka kecil yang tidak mendukung argumen.",
+    "Salah. Menurut tabel, 32% siswa membaca minimal 15 menit setiap hari dan catatannya menyebut sebagian besar buku fiksi, bukan buku digital."
+  ],
+  20: [
+    "Benar. Angka ini tertulis jelas pada tabel.",
+    "Salah. Ini generalisasi berlebihan (\"always guarantees\") dan tidak didukung fakta dalam teks maupun tabel.",
+    "Benar. Tabel menunjukkan 55% siswa kebiasaan membacanya membaik setelah mengikuti tantangan membaca.",
+    "Benar. Paragraf 5 menyebut perpustakaan umum, sekolah, dan buku digital gratis membuat membaca mudah diakses siapa saja.",
+    "Salah. Tabel menunjukkan hanya 32% siswa yang membaca minimal 15 menit setiap hari dan 47% mengaku tidak punya waktu, sehingga pernyataan ini bertentangan dengan data."
+  ],
+  21: [
+    "Benar. Energi surya disebut sebagai salah satu jenis energi terbarukan.",
+    "Salah. Batu bara termasuk bahan bakar fosil, bukan energi terbarukan.",
+    "Benar. Energi angin disebut sebagai energi terbarukan.",
+    "Benar. Tenaga air (hydropower) disebut sebagai energi terbarukan.",
+    "Salah. Minyak bumi termasuk bahan bakar fosil, bukan energi terbarukan."
+  ],
+  22: [
+    "Salah. Harga listrik tidak disebut memengaruhi efisiensi panel surya.",
+    "Benar. Teks menyebut efisiensi energi surya dapat menurun pada hari berawan.",
+    "Salah. Jumlah pabrik panel surya tidak berkaitan dengan efisiensi kerja panel dan tidak disebut dalam teks.",
+    "Salah. Jumlah penduduk tidak memengaruhi efisiensi panel surya.",
+    "Salah. Teks menyebut sinar matahari tersedia hampir di mana saja, bukan bergantung pada jarak dari khatulistiwa."
+  ],
+  23: [
+    "Salah. Tujuan membujuk adalah ciri teks eksposisi, sedangkan teks ini bersifat informatif dan tidak mengajak berhenti memakai bahan bakar fosil segera.",
+    "Benar. Report text bertujuan menyampaikan informasi umum. Teks ini menjelaskan berbagai jenis energi terbarukan beserta cara kerjanya.",
+    "Salah. Teks tidak mengkritik pemerintah mana pun.",
+    "Salah. Sejarah revolusi industri tidak dibahas dalam teks.",
+    "Salah. Teks tidak membandingkan harga listrik antarnegara."
+  ],
+  24: [
+    "Sunlight. Panel surya mengubah sinar matahari menjadi listrik (paragraf 2).",
+    "Moving air or water. Turbin angin mengubah gerakan udara menjadi tenaga listrik (paragraf 3).",
+    "Moving air or water. Pembangkit listrik tenaga air memakai gerakan air yang mengalir atau jatuh (paragraf 4)."
+  ],
+  25: [
+    "Benar. Paragraf terakhir menyebut energi terbarukan menghasilkan polusi jauh lebih sedikit daripada bahan bakar fosil.",
+    "Benar. Paragraf 5 menyebut energi panas bumi umum dipakai di daerah dengan aktivitas gunung berapi.",
+    "Salah. Paragraf terakhir menyebut pembangunan infrastruktur energi terbarukan dapat membutuhkan biaya awal yang tinggi.",
+    "Benar. Paragraf 4 menyebut tenaga air adalah salah satu bentuk energi terbarukan tertua.",
+    "Salah. Turbin angin membutuhkan angin yang kuat dan konsisten, bukan daerah tanpa angin."
+  ],
+  26: [
+    "Benar. Ringkasan ini mencakup kunjungan ke Gunung Bromo, menyaksikan matahari terbit, dan mendaki ke kawah meski perjalanan dingin dan melelahkan.",
+    "Salah. Penulis berwisata bersama keluarga dan tidak menyebut proyek sekolah atau penelitian abu vulkanik.",
+    "Salah. Penulis tidak berkemah dan tidak tersesat. Mereka berkendara bersama pemandu.",
+    "Salah. Terlalu sempit: naik kuda hanya salah satu bagian perjalanan, sementara inti ceritanya juga matahari terbit dan kawah.",
+    "Salah. Perjalanan tidak dibatalkan; penulis benar-benar sampai ke Bromo dan melihat kawahnya."
+  ],
+  27: [
+    "Benar. Penulis merasa gugup di awal karena jalan menuju gunung gelap, sempit, dan dingin.",
+    "Salah. Penulis menyebut pemandangan matahari terbit sebagai salah satu hal terindah yang pernah dilihat dan ia pulang dengan gembira, jadi ia tidak bosan.",
+    "Benar. Penulis takjub melihat langit berubah oranye dan merah muda saat matahari terbit.",
+    "Benar. Setelah mendaki sekitar 250 anak tangga dan menjalani perjalanan panjang, penulis merasa sangat lelah di akhir perjalanan.",
+    "Salah. Pemandu tidak disebut terlambat; justru pemandu yang menyarankan bangun pagi untuk melihat matahari terbit."
+  ],
+  28: [
+    "Salah. Lalu lintas saat pulang tidak disebut dalam teks.",
+    "Benar. Pemandu mengatakan pemandangan matahari terbit adalah bagian terbaik perjalanan, sehingga mereka bangun pukul dua pagi.",
+    "Salah. Bau belerang baru dialami setelah tiba di kawah, dan bukan alasan mereka bangun pagi.",
+    "Salah. Teks tidak menyebut jam malam hotel.",
+    "Salah. Teks tidak menyebut keinginan bertemu wisatawan lain sebelum tur dimulai."
+  ],
+  29: [
+    "Salah. Bangun pukul dua pagi memang berat, tetapi kalimat ini hanya menunjukkan waktu bangun, bukan usaha fisik saat hiking.",
+    "Benar. Naik kuda lalu mendaki sekitar 250 anak tangga menuju tepi kawah jelas membutuhkan tenaga.",
+    "Salah. Kalimat ini menggambarkan udara dingin dan orang-orang yang menunggu dengan tenang, bukan usaha fisik.",
+    "Salah. Bau belerang berkaitan dengan indra penciuman, bukan usaha fisik.",
+    "Benar. Rasa sangat lelah saat kembali ke hotel menunjukkan bahwa perjalanan menguras tenaga."
+  ],
+  30: [
+    "Salah. Cerita tidak menyimpulkan bahwa perjalanan malam selalu berbahaya. Penulis justru merasa senang dan mendapat pengalaman berkesan.",
+    "Benar. Penulis menyimpulkan bahwa bangun pagi dan menghadapi sedikit ketidaknyamanan dapat menghasilkan pengalaman tak terlupakan.",
+    "Salah. Bertentangan dengan cerita: penulis menyebut matahari terbit sebagai salah satu hal terindah yang pernah ia lihat.",
+    "Salah. Keluarga penulis biasa saja dan tidak dikatakan atlet profesional, tetapi mereka mampu mendaki.",
+    "Salah. Teks tidak menyatakan bahwa naik kuda adalah cara paling aman untuk bepergian di kawasan vulkanik."
+  ]
+};
+
+const examSectionsEl = document.getElementById('examSections');
+const answers = sections.map(sec => sec.questions.map(q=>{
+  if(q.type==='mc') return null;
+  if(q.type==='mcma') return new Set();
+  if(q.type==='table') return new Array(q.rows.length).fill(null);
+}));
+
+let totalQuestions = 0;
+sections.forEach(sec=>totalQuestions += sec.questions.length);
+
+function letterFor(i){ return String.fromCharCode(65+i); }
+
+sections.forEach((sec, si)=>{
+  const panel = document.createElement('div');
+  panel.className = 'panel';
+
+  let passageHTML = `<div class="passage"><span class="tag">${sec.tag}</span><h2>${sec.title}</h2>`;
+  if(sec.passage){ sec.passage.forEach(p=>{ passageHTML += `<p>${p}</p>`; }); }
+  if(sec.infographic){
+    passageHTML += `<div class="infographic-grid">`;
+    sec.infographic.forEach(item=>{
+      passageHTML += `<div class="info-item"><div class="n">${item.n}</div><div class="t"><b>${item.t}</b>${item.d}</div></div>`;
+    });
+    passageHTML += `</div>`;
+  }
+  if(sec.table){
+    passageHTML += `<p style="font-weight:600;margin-top:16px;">${sec.table.title}</p>`;
+    passageHTML += `<table><thead><tr>${sec.table.head.map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>`;
+    sec.table.rows.forEach(r=>{ passageHTML += `<tr>${r.map(c=>`<td>${c}</td>`).join('')}</tr>`; });
+    passageHTML += `</tbody></table>`;
+  }
+  if(sec.source){ passageHTML += `<div class="src" style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink-soft);margin-top:10px;">${sec.source}</div>`; }
+  passageHTML += `</div>`;
+  panel.innerHTML = passageHTML;
+
+  sec.questions.forEach((q, qi)=>{
+    const card = document.createElement('div');
+    card.className = 'q-card';
+    card.dataset.si = si; card.dataset.qi = qi;
+    let inner = `<div class="q-stem"><span class="qn">${globalNum(si,qi)}.</span>${q.q}</div>`;
+
+    if(q.type==='mc'){
+      inner += `<div class="options">${q.options.map((opt,oi)=>`
+        <label class="opt" data-si="${si}" data-qi="${qi}" data-o="${oi}">
+          <input type="radio" name="s${si}q${qi}" value="${oi}">
+          <span>${letterFor(oi)}. ${opt}</span>
+        </label>`).join('')}</div>`;
+    } else if(q.type==='mcma'){
+      inner += `<div class="options">${q.options.map((opt,oi)=>`
+        <label class="opt" data-si="${si}" data-qi="${qi}" data-o="${oi}">
+          <input type="checkbox" name="s${si}q${qi}" value="${oi}">
+          <span>${letterFor(oi)}. ${opt}</span>
+        </label>`).join('')}</div>`;
+    } else if(q.type==='table'){
+      inner += `<table class="match-table" data-si="${si}" data-qi="${qi}"><thead><tr><th></th>${q.cols.map(c=>`<th>${c}</th>`).join('')}</tr></thead><tbody>`;
+      q.rows.forEach((r,ri)=>{
+        inner += `<tr data-ri="${ri}"><td>${r}</td>${q.cols.map((c,ci)=>`<td><input type="radio" name="s${si}q${qi}r${ri}" value="${ci}"></td>`).join('')}</tr>`;
+      });
+      inner += `</tbody></table>`;
+    }
+    card.innerHTML = inner;
+    panel.appendChild(card);
+  });
+
+  examSectionsEl.appendChild(panel);
+});
+
+function globalNum(si,qi){
+  let n=0;
+  for(let i=0;i<si;i++) n += sections[i].questions.length;
+  return n + qi + 1;
+}
+
+// ---------- Kunci Jawaban (dilindungi password) ----------
+const ANSWER_KEY_PASSWORD = '3435';
+const keyBtn = document.getElementById('keyBtn');
+const keyModal = document.getElementById('keyModal');
+const keyModalClose = document.getElementById('keyModalClose');
+const keyList = document.getElementById('keyList');
+let keyRendered = false;
+
+function renderAnswerKey(){
+  if(keyRendered) return;
+  let html = '';
+  sections.forEach((sec,si)=>{
+    html += `<div class="key-section-label">${sec.tag} — ${sec.title}</div>`;
+    sec.questions.forEach((q,qi)=>{
+      const num = globalNum(si,qi);
+      let ans = '';
+      if(q.type==='mc'){
+        ans = `${letterFor(q.correct)}. ${q.options[q.correct]}`;
+      } else if(q.type==='mcma'){
+        ans = q.correct.map(i=>letterFor(i)+'. '+q.options[i]).join('; ');
+      } else if(q.type==='table'){
+        ans = q.rows.map((r,ri)=>`${r} = ${q.cols[q.correct[ri]]}`).join('; ');
+      }
+      const ex = EXPLANATIONS[num] || [];
+      let expLines = '';
+      if(q.type==='mc') expLines = `<div class="key-exp">${cleanExp(ex[q.correct])}</div>`;
+      else if(q.type==='mcma') expLines = q.correct.map(i=>`<div class="key-exp"><b>${letterFor(i)}.</b> ${cleanExp(ex[i])}</div>`).join('');
+      else if(q.type==='table') expLines = q.rows.map((r,ri)=>`<div class="key-exp"><b>${r}:</b> ${cleanExp(ex[ri])}</div>`).join('');
+      html += `<div class="key-item"><b>${num}.</b>${ans}<div class="key-exp-wrap"><div class="key-exp-title">Penjelasan jawaban benar</div>${expLines}</div></div>`;
+    });
+  });
+  keyList.innerHTML = html;
+  keyRendered = true;
+}
+
+keyBtn.addEventListener('click', ()=>{
+  const input = prompt('Masukkan password untuk melihat Kunci Jawaban:');
+  if(input === null) return;
+  if(input.trim() === ANSWER_KEY_PASSWORD){
+    renderAnswerKey();
+    keyModal.classList.add('show');
+  } else {
+    alert('Password salah.');
+  }
+});
+keyModalClose.addEventListener('click', ()=> keyModal.classList.remove('show'));
+keyModal.addEventListener('click', (e)=>{ if(e.target === keyModal) keyModal.classList.remove('show'); });
+
+examSectionsEl.addEventListener('change', (e)=>{
+  const t = e.target;
+  if(t.type==='radio' && t.closest('.opt')){
+    const label = t.closest('.opt');
+    const si = +label.dataset.si, qi = +label.dataset.qi, oi = +label.dataset.o;
+    answers[si][qi] = oi;
+    document.querySelectorAll(`.opt[data-si="${si}"][data-qi="${qi}"]`).forEach(el=>{
+      el.classList.toggle('selected', +el.dataset.o === oi);
+    });
+    updateProgress();
+  } else if(t.type==='checkbox' && t.closest('.opt')){
+    const label = t.closest('.opt');
+    const si = +label.dataset.si, qi = +label.dataset.qi, oi = +label.dataset.o;
+    if(t.checked) answers[si][qi].add(oi); else answers[si][qi].delete(oi);
+    label.classList.toggle('selected', t.checked);
+    updateProgress();
+  } else if(t.type==='radio' && t.closest('.match-table')){
+    const table = t.closest('.match-table');
+    const si = +table.dataset.si, qi = +table.dataset.qi;
+    const row = t.closest('tr');
+    const ri = +row.dataset.ri;
+    answers[si][qi][ri] = +t.value;
+    updateProgress();
+  }
+});
+
+function updateProgress(){
+  let answered = 0;
+  sections.forEach((sec,si)=>{
+    sec.questions.forEach((q,qi)=>{
+      const a = answers[si][qi];
+      if(q.type==='mc' && a!==null) answered++;
+      else if(q.type==='mcma' && a.size>0) answered++;
+      else if(q.type==='table' && a.every(v=>v!==null)) answered++;
+    });
+  });
+  const pct = Math.round((answered/totalQuestions)*100);
+  document.getElementById('progressFill').style.width = pct + '%';
+}
+
+let secondsLeft = 75*60;
+const EXAM_DURATION_SEC = 75*60;
+let examStartedAt = null;   // waktu mulai (ms) — dipakai untuk menghitung lama pengerjaan
+let sessionId = null;       // ID unik sesi pengerjaan, supaya guru bisa melacak siswa dari awal sampai selesai
+let examMeta = null;        // ringkasan hasil waktu (diisi saat selesai)
+
+function pad2(n){ return String(n).padStart(2,'0'); }
+function fmtClock(sec){ return pad2(Math.floor(sec/60)) + ':' + pad2(sec%60); }
+function fmtDurasiText(sec){
+  const m = Math.floor(sec/60), d = sec%60;
+  if(m === 0) return d + ' detik';
+  return m + ' menit ' + d + ' detik';
+}
+function fmtStamp(ms){
+  const d = new Date(ms);
+  return d.getFullYear()+'-'+pad2(d.getMonth()+1)+'-'+pad2(d.getDate())+' '+pad2(d.getHours())+':'+pad2(d.getMinutes())+':'+pad2(d.getSeconds());
+}
+function fmtHM(ms){ const d = new Date(ms); return pad2(d.getHours())+':'+pad2(d.getMinutes()); }
+function makeSessionId(){ return 'S' + Date.now().toString(36).toUpperCase() + Math.random().toString(36).slice(2,6).toUpperCase(); }
+
+// Tanda "sedang mengerjakan": dikirim ke rekap guru begitu siswa menekan Mulai
+function sendStartSignal(){
+  try{
+    if(typeof google === 'undefined' || !google.script || !google.script.run) return;
+    google.script.run
+      .withFailureHandler(()=>{})
+      .withSuccessHandler(()=>{})
+      .recordStart({
+        sessionId: sessionId,
+        nama: (document.getElementById('studentName').value.trim() || '(tanpa nama)'),
+        kelas: (document.getElementById('studentClass').value || '-'),
+        mulai: new Date(examStartedAt).toISOString(),
+        mulaiLokal: fmtStamp(examStartedAt),
+        status: 'Sedang mengerjakan'
+      });
+  }catch(err){}
+}
+let timerInterval = null;
+const timeLeftEl = document.getElementById('timeLeft');
+const timerEl = document.getElementById('timer');
+
+function formatTime(s){
+  const m = Math.floor(s/60).toString().padStart(2,'0');
+  const sec = (s%60).toString().padStart(2,'0');
+  return `${m}:${sec}`;
+}
+function startTimer(){
+  timerInterval = setInterval(()=>{
+    secondsLeft--;
+    timeLeftEl.textContent = formatTime(secondsLeft);
+    if(secondsLeft <= 120) timerEl.classList.add('low');
+    if(secondsLeft <= 0){
+      clearInterval(timerInterval);
+      finishExam();
+    }
+  }, 1000);
+}
+
+document.getElementById('startBtn').addEventListener('click', ()=>{
+  const nameEl = document.getElementById('studentName');
+  const classEl = document.getElementById('studentClass');
+  const warnEl = document.getElementById('idWarn');
+  if(!nameEl.value.trim() || !classEl.value){
+    warnEl.classList.add('show');
+    return;
+  }
+  warnEl.classList.remove('show');
+  if(window.__requestFullscreenIfAvailable) window.__requestFullscreenIfAvailable();
+  document.getElementById('cover').style.display = 'none';
+  document.getElementById('exam').style.display = 'block';
+  examStartedAt = Date.now();
+  sessionId = makeSessionId();
+  sendStartSignal();
+  startTimer();
+  updateProgress();
+  window.scrollTo({top:0});
+});
+
+document.getElementById('finishSecondary').addEventListener('click', finishExam);
+document.getElementById('restartBtn').addEventListener('click', ()=> location.reload());
+
+function setsEqual(setA, arr){
+  if(setA.size !== arr.length) return false;
+  for(const v of arr){ if(!setA.has(v)) return false; }
+  return true;
+}
+
+function escHTML(t){ return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function cleanExp(t){ return (t || '').replace(/^(Benar|Salah)\.\s*/,''); }
+
+function buildExplanationHTML(si, qi, q, num, isCorrect){
+  const ex = EXPLANATIONS[num];
+  if(!ex) return '';
+  let html = `<div class="exp-stem"><b>${q.q}</b></div><div class="exp-title">Penjelasan jawaban benar</div>`;
+  let others = '';
+  if(q.type==='mc' || q.type==='mcma'){
+    q.options.forEach((opt, oi)=>{
+      const good = q.type==='mc' ? (oi === q.correct) : q.correct.includes(oi);
+      const picked = q.type==='mc' ? (answers[si][qi] === oi) : answers[si][qi].has(oi);
+      const block = `<div class="exp-opt ${good?'is-correct':'is-wrong'}">
+        <div class="exp-o"><span class="exp-badge">${good?'Benar':'Salah'}</span><b>${letterFor(oi)}.</b> ${opt}${picked?'<span class="exp-you">← pilihanmu</span>':''}</div>
+        <div class="exp-t">${cleanExp(ex[oi])}</div></div>`;
+      if(good) html += block; else others += block;
+    });
+    html += `<details class="exp-box"${isCorrect?'':' open'}><summary>Mengapa pilihan lain salah?</summary>${others}</details>`;
+  } else if(q.type==='table'){
+    q.rows.forEach((r, ri)=>{
+      const chosen = answers[si][qi][ri];
+      const ok = chosen === q.correct[ri];
+      html += `<div class="exp-opt is-correct">
+        <div class="exp-o"><span class="exp-badge">Benar</span>${r} → <b>${q.cols[q.correct[ri]]}</b>${chosen===null?'<span class="exp-you">← belum dijawab</span>':(ok?'':`<span class="exp-you">← pilihanmu: ${q.cols[chosen]}</span>`)}</div>
+        <div class="exp-t">${cleanExp(ex[ri])}</div></div>`;
+    });
+  }
+  return `<div class="exp-wrap">${html}</div>`;
+}
+
+function finishExam(){
+  clearInterval(timerInterval);
+  const finishedAt = Date.now();
+  const timeUp = secondsLeft <= 0;
+  let usedSec = examStartedAt ? Math.round((finishedAt - examStartedAt)/1000) : (EXAM_DURATION_SEC - secondsLeft);
+  usedSec = Math.max(0, Math.min(EXAM_DURATION_SEC, usedSec));
+  examMeta = {
+    usedSec: usedSec,
+    startedAt: examStartedAt || (finishedAt - usedSec*1000),
+    finishedAt: finishedAt,
+    status: timeUp ? 'Waktu habis' : 'Selesai'
+  };
+  document.getElementById('exam').style.display = 'none';
+  document.getElementById('results').style.display = 'block';
+
+  let correctCount = 0;
+  const reviewList = document.getElementById('reviewList');
+  reviewList.innerHTML = '';
+
+  sections.forEach((sec,si)=>{
+    sec.questions.forEach((q,qi)=>{
+      const num = globalNum(si,qi);
+      let isCorrect = false;
+
+      if(q.type==='mc'){
+        const chosen = answers[si][qi];
+        isCorrect = chosen === q.correct;
+        document.querySelectorAll(`.opt[data-si="${si}"][data-qi="${qi}"]`).forEach(el=>{
+          const oi = +el.dataset.o;
+          if(oi === q.correct) el.classList.add('reveal-correct');
+          if(oi === chosen && chosen !== q.correct) el.classList.add('reveal-wrong');
+          const input = el.querySelector('input'); if(input) input.disabled = true;
+        });
+      } else if(q.type==='mcma'){
+        isCorrect = setsEqual(answers[si][qi], q.correct);
+        document.querySelectorAll(`.opt[data-si="${si}"][data-qi="${qi}"]`).forEach(el=>{
+          const oi = +el.dataset.o;
+          const wasChosen = answers[si][qi].has(oi);
+          if(q.correct.includes(oi)) el.classList.add('reveal-correct');
+          else if(wasChosen) el.classList.add('reveal-wrong');
+          const input = el.querySelector('input'); if(input) input.disabled = true;
+        });
+      } else if(q.type==='table'){
+        isCorrect = q.rows.every((r,ri)=> answers[si][qi][ri] === q.correct[ri]);
+        const table = document.querySelector(`table.match-table[data-si="${si}"][data-qi="${qi}"]`);
+        table.querySelectorAll('tr[data-ri]').forEach(row=>{
+          const ri = +row.dataset.ri;
+          row.classList.add(answers[si][qi][ri]===q.correct[ri] ? 'row-correct' : 'row-wrong');
+          row.querySelectorAll('input').forEach(inp=> inp.disabled = true);
+        });
+      }
+
+      if(isCorrect) correctCount++;
+
+      const row = document.createElement('div');
+      row.className = 'review-item';
+      let detail = '';
+      if(!isCorrect){
+        if(q.type==='mc') detail = ` — jawaban benar: ${letterFor(q.correct)}. ${q.options[q.correct]}`;
+        else if(q.type==='mcma') detail = ` — jawaban benar: ${q.correct.map(i=>letterFor(i)+'. '+q.options[i]).join('; ')}`;
+        else if(q.type==='table') detail = ` — pencocokan yang tepat: ${q.rows.map((r,ri)=>`${r} = ${q.cols[q.correct[ri]]}`).join('; ')}`;
+      }
+      row.innerHTML = `<span class="icon ${isCorrect?'ok':'no'}">${isCorrect?'\u2713':'\u2715'}</span>
+        <span class="txt"><b>Soal ${num}</b> (${sec.title}): ${isCorrect ? 'Benar' : 'Kurang tepat'}${detail}</span>`;
+      const expHTML = buildExplanationHTML(si, qi, q, num, isCorrect);
+      if(expHTML) row.querySelector('.txt').insertAdjacentHTML('beforeend', expHTML);
+      reviewList.appendChild(row);
+    });
+  });
+
+  const pct = Math.round((correctCount/totalQuestions)*100);
+  document.getElementById('scoreRing').style.setProperty('--pct', pct);
+  document.getElementById('scoreNum').textContent = `${correctCount}/${totalQuestions}`;
+
+  let verdict = 'Terus berlatih membaca berjenjang.';
+  if(pct === 100) verdict = 'Sempurna — pemahaman literal, inferensial, dan evaluatif sudah kuat.';
+  else if(pct >= 60) verdict = 'Baik — tinggal perkuat level inferensial dan evaluatif.';
+  const nama = document.getElementById('studentName').value.trim();
+  const kelas = document.getElementById('studentClass').value;
+  if(nama || kelas) verdict = `${nama || '-'} · ${kelas || '-'} — ${verdict}`;
+  document.getElementById('verdictSub').textContent = verdict;
+
+  const timeNote = document.createElement('div');
+  timeNote.className = 'time-note';
+  timeNote.innerHTML = '&#9201; Lama pengerjaan: <b>' + fmtDurasiText(examMeta.usedSec) + '</b> (' + fmtClock(examMeta.usedSec) + ' dari 75:00)'
+    + ' &middot; ' + fmtHM(examMeta.startedAt) + ' &rarr; ' + fmtHM(examMeta.finishedAt)
+    + (examMeta.status === 'Waktu habis' ? ' &middot; <b>waktu habis</b>' : '');
+  document.getElementById('verdictSub').insertAdjacentElement('afterend', timeNote);
+
+  sendResultToSheet(correctCount, totalQuestions, pct);
+
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+// ---------- Kirim hasil ke Google Sheets (Apps Script) ----------
+function sendResultToSheet(correctCount, totalQuestions, pct){
+  const nama = document.getElementById('studentName').value.trim();
+  const kelas = document.getElementById('studentClass').value;
+
+  const detailParts = [];
+  sections.forEach((sec,si)=>{
+    sec.questions.forEach((q,qi)=>{
+      const num = globalNum(si,qi);
+      let ok = false;
+      if(q.type==='mc') ok = answers[si][qi] === q.correct;
+      else if(q.type==='mcma') ok = setsEqual(answers[si][qi], q.correct);
+      else if(q.type==='table') ok = q.rows.every((r,ri)=> answers[si][qi][ri] === q.correct[ri]);
+      detailParts.push(`${num}:${ok?'B':'S'}`);
+    });
+  });
+
+  const payload = {
+    nama: nama || '(tanpa nama)',
+    kelas: kelas || '-',
+    correctCount: correctCount,
+    totalQuestions: totalQuestions,
+    percentage: pct,
+    detail: detailParts.join(';'),
+    sessionId: sessionId,
+    status: examMeta ? examMeta.status : 'Selesai',
+    mulai: examMeta ? new Date(examMeta.startedAt).toISOString() : '',
+    selesai: examMeta ? new Date(examMeta.finishedAt).toISOString() : '',
+    mulaiLokal: examMeta ? fmtStamp(examMeta.startedAt) : '',
+    selesaiLokal: examMeta ? fmtStamp(examMeta.finishedAt) : '',
+    durasiDetik: examMeta ? examMeta.usedSec : '',
+    durasi: examMeta ? fmtClock(examMeta.usedSec) : ''
+  };
+
+  const noteHost = document.getElementById('verdictSub');
+  if(typeof google !== 'undefined' && google.script && google.script.run){
+    google.script.run
+      .withSuccessHandler(()=>{
+        const n = document.createElement('div');
+        n.className = 'sync-note ok';
+        n.textContent = 'Hasil tersimpan ke rekap guru.';
+        noteHost.insertAdjacentElement('afterend', n);
+      })
+      .withFailureHandler((err)=>{
+        const n = document.createElement('div');
+        n.className = 'sync-note err';
+        n.textContent = 'Gagal mengirim hasil ke rekap guru: ' + (err && err.message ? err.message : err);
+        noteHost.insertAdjacentElement('afterend', n);
+      })
+      .recordScore(payload);
+  } else {
+    const n = document.createElement('div');
+    n.className = 'sync-note err';
+    n.textContent = 'Mode pratinjau lokal — hasil tidak dikirim ke Google Sheets (jalankan sebagai Web App Apps Script agar tersimpan).';
+    noteHost.insertAdjacentElement('afterend', n);
+  }
+}
+</script>
+</body>
+</html>
